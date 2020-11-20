@@ -9,7 +9,6 @@ trigger:
 variables:
   otcTaskVersionArg: v5.0.2
   namespace: hml
-  npmCacheFolder: $(Pipeline.Workspace)/.npm
 stages:
 - stage: Build
   jobs:
@@ -36,8 +35,7 @@ stages:
       name: Test
 
     - script: |
-        npm install -g sonarqube-scanner
-        npx sonar-scanner -Dsonar.host.url=${SONARQUBE_HOST} -Dsonar.login=${SONARQUBE_USERKEY} -Dsonar.typescript.tsconfigPath=tsconfig.base.json | tee sonarscanner-end-output
+        npx sonar-scanner -Dsonar.host.url=${SONARQUBE_HOST} -Dsonar.login=${SONARQUBE_USERKEY} | tee sonarscanner-end-output
       name: SonarScanner
 
     - script: otc-task --bash-login $(otcTaskVersionArg) sonarscanner-result-validation
@@ -71,8 +69,7 @@ stages:
       name: TestForSonarAnalysis
 
     - script: |
-        npm install -g sonarqube-scanner
-        npx sonar-scanner -Dsonar.host.url=${SONARQUBE_HOST} -Dsonar.login=${SONARQUBE_USERKEY} -Dsonar.typescript.tsconfigPath=tsconfig.base.json
+        npx sonar-scanner -Dsonar.host.url=${SONARQUBE_HOST} -Dsonar.login=${SONARQUBE_USERKEY}
       name: SonarScanner
 
     - script: otc-task $(otcTaskVersionArg) deploy-preview $(namespace) _ "./"
