@@ -1,0 +1,79 @@
+name: $(Build.Reason)-$(Build.SourceBranchName)-$(Build.BuildId)
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - src/*
+variables:
+  otcTaskVersionArg: v5.0.2
+  namespace: hml
+  npmCacheFolder: $(Pipeline.Workspace)/.npm
+stages:
+- stage: Build
+  jobs:
+  - job: PR_Build
+    pool:
+      name: Kubernetes
+    workspace:
+      clean: all
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+
+    steps:
+    - script: otc-task $(otcTaskVersionArg) preconditions 250 '^[+-]\s*(\/\/.*|)$' ':*' ':(exclude)*spec.ts'
+      name: Preconditions
+
+    - script: |
+        npm install puppeteer --unsafe-perm
+        npm install
+      name: Restore
+
+    - script: npm run-script build
+      name: Build
+
+    - script: npm run-script test-no-watch --code-coverage
+      name: Test
+
+    - script: |
+        npm install -g sonarqube-scanner
+        npx sonar-scanner -Dsonar.host.url=${SONARQUBE_HOST} -Dsonar.login=${SONARQUBE_USERKEY} -Dsonar.typescript.tsconfigPath=tsconfig.base.json | tee sonarscanner-end-output
+      name: SonarScanner
+
+    - script: otc-task --bash-login $(otcTaskVersionArg) sonarscanner-result-validation
+      name: SonarScannerResultValidation
+
+    - script: otc-task $(otcTaskVersionArg) deploy-preview $(namespace) _ "./"
+      name: DeployPreview
+
+    - script: otc-task $(otcTaskVersionArg) finalize
+      name: Finalize
+      condition: always() # this step will always run, even if the pipeline is cancelled
+
+  - job: CICD_Build
+    pool:
+      name: Kubernetes
+
+    workspace:
+      clean: all
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+
+    steps:
+    - script: |
+        npm install puppeteer --unsafe-perm
+        npm install
+      name: Restore
+
+    - script: npm run-script build
+      name: Build
+
+    - script: npm run-script test-no-watch --code-coverage
+      name: TestForSonarAnalysis
+
+    - script: |
+        npm install -g sonarqube-scanner
+        npx sonar-scanner -Dsonar.host.url=${SONARQUBE_HOST} -Dsonar.login=${SONARQUBE_USERKEY} -Dsonar.typescript.tsconfigPath=tsconfig.base.json
+      name: SonarScanner
+
+    - script: otc-task $(otcTaskVersionArg) deploy-preview $(namespace) _ "./"
+      name: Deploy

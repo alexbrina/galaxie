@@ -1,0 +1,18 @@
+parentDomain: {{tpl.k8sParentDomain}}
+replicaCount: 1
+image:
+  repository: {{tpl.dockerHubUser}}/{{tpl.identity}}
+  tag: 0
+dockerRegistrationSecret: ole-docker-reg
+
+# Runtime
+TZ: "America/Sao_Paulo"
+
+# Recursos
+memoryRequest: "64Mi"
+cpuRequest: "100m"
+memoryLimit: "64Mi"
+cpuLimit: "100m"
+
+# TODO: Adicionar aqui (em conjunto com o config.js [embutido no configmap])
+# as configuracoes para os servicos utilizados
