@@ -25,3 +25,30 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+# Template
+[![Build Status](https://travis-ci.org/OleConsignado/galaxie.svg?branch=master)](https://travis-ci.org/OleConsignado/galaxie)
+
+## Creating a project based on Galaxie
+
+To install (or update) the **Galaxie** template on your machine (template package is present not [NuGet.org](https://www.nuget.org/packages/Galaxie)), simply run:
+
+```
+$ dotnet new -i galaxie
+```
+
+To create a new project based on **Galaxie**:
+
+```
+$ dotnet new galaxie --name=MyProject --identity=myproject
+```
+
+To uninstall **Galaxie** template:
+
+```
+$ dotnet new -u galaxie
+```
+
+## Collaborating with Galaxie project
+
+*Issues* and *Pull Requests* are welcome!

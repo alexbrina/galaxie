@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Ole Consignado",
+  "classifications": [ "Angular", "SPA" ],
+  "identity": "Galaxie",
+  "name": "Galaxie",
+  "shortName": "galaxie",
+  "sourceName": "Galaxie",
+  "symbols": {
+    "name": {
+      "type": "parameter",
+      "isRequired": true,
+      "datatype": "string",
+      "replaces": "{{tpl.name}}",
+      "description": "Project name for use in home page title, for instance."
+    },
+    "identity": {
+      "type": "parameter",
+      "isRequired": true,
+      "datatype": "string",
+      "replaces": "{{tpl.identity}}",
+      "description": "Project identity for use as Helm chart, Docker image and others."
+    },
+    "k8s-parent-domain": {
+      "type": "parameter",
+      "isRequired": true,
+      "datatype": "string",
+      "replaces": "{{tpl.k8sParentDomain}}",
+      "defaultValue": "mykubernetes-cluster.mycompany.com",
+      "description": "Kubernetes ingress parent domain."
+    },
+    "dockerhub-user": {
+      "type": "parameter",
+      "isRequired": false,
+      "datatype": "string",
+      "replaces": "{{tpl.dockerHubUser}}",
+      "defaultValue": "oleconsignado",
+      "description": "Docker Hub username."
+    }
+  }
+}

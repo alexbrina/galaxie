@@ -1,0 +1,6 @@
+# Ignore everything
+**
+
+# Allow required files and directories
+!nginx.conf
+!dist/**

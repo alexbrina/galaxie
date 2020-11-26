@@ -1,0 +1,10 @@
+language: javascript
+dist: xenial
+dotnet: 3.1
+
+deploy:
+  provider: script
+  script: bash ./cicd.sh deploy
+  on:
+    branch: release
+    tags: true
