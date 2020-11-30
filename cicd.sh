@@ -2,6 +2,22 @@
 
 set -e
 
+function install
+{
+    echo "Not applicable";
+}
+
+function build
+{
+    echo "Not applicable";
+}
+
+
+function test
+{
+    echo "Not applicable";
+}
+
 function deploy
 {
     cd $TRAVIS_BUILD_DIR/Template

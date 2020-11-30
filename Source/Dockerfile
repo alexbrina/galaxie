@@ -1,5 +1,5 @@
 FROM nginx:1.17.6
-RUN apt-get update && apt-get install -y nginx-extras
+RUN apt-get update && apt-get install -y nginx-extras && rm -rf /var/lib/apt/lists/*
 ENV APP_PATH /opt/dist
 RUN mkdir -p $APP_PATH
 COPY dist/{{tpl.identity}} $APP_PATH/
