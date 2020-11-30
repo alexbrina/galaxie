@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>Galaxie</id>
-        <version>1.0.0-alpha3</version>
+        <version>1.0.0-alpha4</version>
 	<description>SPA/Angular project template.</description>
         <authors>Ole Consignado</authors>
         <packageTypes>
